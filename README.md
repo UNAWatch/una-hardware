@@ -20,6 +20,7 @@ una-watch
 	- mechanical
 	
 		.stp files for each mechanical part
+		(preview images: una-watch/mechanical/README.md)
 
 ## License
 

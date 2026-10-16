@@ -1,0 +1,65 @@
+{
+  "Antenna_501-0017_Rev-8.stp": {
+    "sha256": "28e09243172ff146ea865f109af983709d1c22f17b834c3c04d8f0113033adda",
+    "size_mm": [
+      34.37,
+      13.17,
+      6.5
+    ],
+    "triangles": 9214
+  },
+  "Battery_Compartment_501-0018_Rev-2.stp": {
+    "sha256": "16a67ee555cab44b02f8911655575af4e07bbd877d9324c19fc0b0d6c9e6b529",
+    "size_mm": [
+      39.1,
+      33.5,
+      4.0
+    ],
+    "triangles": 10162
+  },
+  "Bezel_501-0016_Rev-2.stp": {
+    "sha256": "a4346b78893c6f5ca98bdd7f37ae0fe0166033f30efff8833187b731ee03a3db",
+    "size_mm": [
+      46.5,
+      5.84,
+      49.12
+    ],
+    "triangles": 24614
+  },
+  "Button_400-0015_Rev-3.stp": {
+    "sha256": "d75b32724e782ec534dd322bbcab6f1aa5de71aa0370cf1efb98a280b9ed0aea",
+    "size_mm": [
+      5.3,
+      7.49,
+      4.0
+    ],
+    "triangles": 4140
+  },
+  "Housing_501-0015_Rev-2.stp": {
+    "sha256": "d1959ec27847e37304c25d17cc6f2ca88ab13b83c90ff61e6f220bd4a598a001",
+    "size_mm": [
+      47.45,
+      9.4,
+      49.21
+    ],
+    "triangles": 46587
+  },
+  "Rear_Cover_501-0019_Rev-1.stp": {
+    "sha256": "b70bf38b8009920007b5e1c1803ba195e955e6a970def0c4711b5a24ba2ff13c",
+    "size_mm": [
+      45.5,
+      4.75,
+      46.36
+    ],
+    "triangles": 41041
+  },
+  "Rear_Cover_Dome_501-0023_Rev-1.stp": {
+    "sha256": "c074eece6a44ba3956e0bd222167e03353208e4965b8ac396860fa1682921f03",
+    "size_mm": [
+      23.15,
+      3.0,
+      22.5
+    ],
+    "triangles": 13798
+  }
+}

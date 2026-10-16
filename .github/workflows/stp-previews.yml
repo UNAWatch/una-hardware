@@ -1,0 +1,91 @@
+name: STP previews
+
+# Renders a small PNG for every .stp/.step file and refreshes the gallery
+# README in each folder that holds them. See scripts/stp-previews/render.py.
+#
+# - push to main: re-render changed parts and commit the result back.
+# - pull request: render and attach the previews to the run as an artifact
+#   (fork PRs cannot push, so nothing is committed).
+# - manual run: same as push, on the selected branch.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.stp"
+      - "**/*.STP"
+      - "**/*.step"
+      - "**/*.STEP"
+      - "scripts/stp-previews/**"
+      - ".github/workflows/stp-previews.yml"
+  pull_request:
+    paths:
+      - "**/*.stp"
+      - "**/*.STP"
+      - "**/*.step"
+      - "**/*.STEP"
+      - "scripts/stp-previews/**"
+      - ".github/workflows/stp-previews.yml"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Re-render every part, not just changed ones"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: stp-previews-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      # Needed only to commit previews back on push / manual runs.
+      contents: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: scripts/stp-previews/requirements.txt
+
+      - name: Install renderer
+        run: pip install -r scripts/stp-previews/requirements.txt
+
+      - name: Render previews
+        env:
+          # PRs always re-render so the artifact shows every part as CI sees it.
+          FORCE: ${{ (inputs.force || github.event_name == 'pull_request') && '--force' || '' }}
+        run: python scripts/stp-previews/render.py $FORCE
+
+      - name: Upload previews (pull requests)
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
+        with:
+          name: stp-previews
+          path: |
+            **/previews/*.png
+            **/README.md
+          if-no-files-found: ignore
+
+      - name: Commit previews
+        if: github.event_name != 'pull_request'
+        run: |
+          git add -A -- ':(glob)**/previews/**' ':(glob)**/README.md'
+          if git diff --cached --quiet; then
+            echo "Previews already up to date."
+            exit 0
+          fi
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "Update STP previews"
+          # Pushes made with GITHUB_TOKEN do not trigger workflows, so this
+          # cannot loop.
+          git push origin "HEAD:${GITHUB_REF_NAME}"

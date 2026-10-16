@@ -1,0 +1,4 @@
+cadquery-ocp==7.7.0
+matplotlib==3.9.2
+numpy==1.26.4
+pillow==12.3.0
